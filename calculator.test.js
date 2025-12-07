@@ -7,8 +7,11 @@ describe('Calculator', () => {
     beforeEach(() => {
         calc = new Calculator();
     });
-// Funciones básicas de suma y resta para pruebas
+//
     describe('Operaciones básicas', () => {
+        
+        // suma y resta
+        
         test('Suma de 2 + 3 debe ser 5', () => {
             expect(calc.add(2, 3)).toBe(5);
         });
@@ -30,6 +33,25 @@ describe('Calculator', () => {
         test('Resta que da negativo', () => {
             expect(calc.subtract(3, 5)).toBe(-2);
         });
+
+        // multiplicacion 
+
+        test('Multiplicacion de 5 * 5 debe de ser 25', () => {
+            expect(calc.mult(5, 5)).toBe(25);
+        });
+
+        test('Multiplicacion de números negativos', () => {
+            expect(calc.mult(-5, 3)).toBe(-15);
+            expect(calc.add(-5, -5)).toBe(15);
+        });
+
+
+
+
+
+
+
+
     });
 
     describe('Manejo de entrada', () => {
