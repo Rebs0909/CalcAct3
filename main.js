@@ -51,7 +51,9 @@ function handleButtonClick(value) {
 // Evaluar expresión matemática básica 
 function evaluateExpression(expression) {
     try {
-        // Por ahora solo maneja sumas y restas simples
+        if (expression.includes('√')) {
+            return Sqrt(expression);
+        }// Por ahora solo maneja sumas y restas simples
         // Ejemplo: "5+3" o "10-2"
         const result = eval(expression); // CUIDADO: eval tiene riesgos de seguridad
         return result.toString();
@@ -85,7 +87,7 @@ equalButton.addEventListener('click', () => {
     const expression = calculator.getCurrentInput();
     
     // aqui va la evaluación
-    if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
+    if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/') || expression.includes('sqrt')) {
         const result = evaluateExpression(expression);
         
         // Agregar al historial

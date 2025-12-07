@@ -30,9 +30,39 @@ class Calculator {
 
     }
 
+    //Raiz cuadrada
+    sqrt(x) {
+    if (x < 0) {
+        throw new Error("No se puede calcular raíz cuadrada de número negativo");
+    }
+    if (x === 0) return 0;
+    if (x === 1) return 1;
     
+    const precision = 0.000001;
+    let guess = x / 2;
     
-
+    while (true) {
+        // Calcular diferencia absoluta 
+        const difference = (guess * guess) - x;
+        const absDifference = difference < 0 ? -difference : difference;
+        
+        if (absDifference <= precision) {
+            break;
+        }
+        
+        guess = (guess + (x / guess)) / 2;
+    }
+    
+    // Redondear a 6 
+    const rounded = this.roundToDecimal(guess, 6);
+    return rounded;
+    }
+    
+    roundToDecimal(num, decimals) {
+    const factor = Math.pow(10, decimals);
+    return Math.round(num * factor) / factor;
+    
+    }
     // Actualiza el input actual
     updateInput(value) {
         if (this.currentInput === '0' || this.currentInput === 'Error') {
