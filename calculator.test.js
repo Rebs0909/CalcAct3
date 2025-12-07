@@ -56,10 +56,20 @@ describe('Calculator', () => {
         
             expect(calc.div(5, 0)).toBe(Infinity);
             
-    });
+        });
 
+        // Raíz cuadrada
 
+        test('Raíz cuadrada de 25 debe ser 5', () => {
+            expect(calc.sqrt(25)).toBe(5);
+        });
+        test('Raíz cuadrada de 0 debe ser 0', () => {
+        expect(calc.sqrt(0)).toBe(0);
+        });
 
+        test('Raíz cuadrada de 1 debe ser 1', () => {
+        expect(calc.sqrt(1)).toBe(1);
+        });
 
     });
 
@@ -121,7 +131,7 @@ describe('Calculator', () => {
                 calc.addToHistory(`op ${i}`, i.toString());
             }
             expect(calc.getHistory().length).toBe(10);
-            // Los primeros 5 deben haber sido eliminados
+            
             expect(calc.getHistory()[0].operation).toBe('op 5');
         });
     });

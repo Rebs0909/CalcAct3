@@ -30,6 +30,8 @@ class Calculator {
 
     }
 
+    
+    
 
     // Actualiza el input actual
     updateInput(value) {
