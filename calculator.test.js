@@ -42,7 +42,7 @@ describe('Calculator', () => {
 
         test('Multiplicacion de números negativos', () => {
             expect(calc.mult(-5, 3)).toBe(-15);
-            expect(calc.add(-5, -5)).toBe(15);
+            expect(calc.mult(-5, -5)).toBe(25);
         });
 
 
