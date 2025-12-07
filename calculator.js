@@ -23,6 +23,12 @@ class Calculator {
         return a * b;
     }
 
+    // Divide dos números
+    div(a, b) {
+        return a / b;
+    }
+
+
     // Actualiza el input actual
     updateInput(value) {
         if (this.currentInput === '0' || this.currentInput === 'Error') {
