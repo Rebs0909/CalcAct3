@@ -13,7 +13,10 @@ class Calculator {
         return a + b;
     }
 
-
+     // Resta dos números
+    subtract(a, b) {
+        return a - b;
+    }
 
     // Actualiza el input actual
     updateInput(value) {
