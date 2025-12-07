@@ -8,6 +8,13 @@ class Calculator {
 
     
 
+// Suma dos números
+    add(a, b) {
+        return a + b;
+    }
+
+
+
     // Actualiza el input actual
     updateInput(value) {
         if (this.currentInput === '0' || this.currentInput === 'Error') {

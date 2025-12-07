@@ -85,6 +85,18 @@ equalButton.addEventListener('click', () => {
     const expression = calculator.getCurrentInput();
     
     // aqui va la evaluación
+    if (expression.includes('+') || expression.includes('+')) {
+        const result = evaluateExpression(expression);
+        
+        // Agregar al historial
+        calculator.addToHistory(expression, result);
+        
+        // Actualizar input con el resultado
+        calculator.clear();
+        calculator.updateInput(result);
+        updateDisplay();
+        updateHistoryDisplay();
+    }
 });
 
 // Inicializar display
