@@ -39,18 +39,19 @@ class Calculator {
     if (x === 1) return 1;
     
     const precision = 0.000001;
-    let guess = x / 2;
+    let guess = this.div(x, 2);
     
     while (true) {
-        // Calcular diferencia absoluta 
-        const difference = (guess * guess) - x;
-        const absDifference = difference < 0 ? -difference : difference;
+        // Calcular diferencia absoluta usando mult y subtract
+        const difference = this.subtract(this.mult(guess, guess), x);
+        const absDifference = difference < 0 ? this.mult(difference, -1) : difference;
         
         if (absDifference <= precision) {
             break;
         }
         
-        guess = (guess + (x / guess)) / 2;
+        // guess = (guess + (x / guess)) / 2
+        guess = this.div(this.add(guess, this.div(x, guess)), 2);
     }
     
     // Redondear a 6 
@@ -59,23 +60,42 @@ class Calculator {
     }
     
     roundToDecimal(num, decimals) {
-    const factor = Math.pow(10, decimals);
-    return Math.round(num * factor) / factor;
-
+    let factor = 1;
+    
+    // Calcular 10^decimals usando mult
+    for (let i = 0; i < decimals; i++) {
+        factor = this.mult(factor, 10);
     }
+    
+    // Multiplicar num por factor
+    const n = this.mult(num, factor);
+    
+    // Truncar a entero (parte entera)
+    const entero = n | 0;
+    
+    // Calcular la parte decimal
+    const decimal = this.subtract(n, entero);
+    
+    // Redondear: si decimal >= 0.5, sumar 1 al entero
+    const redondeado = decimal >= 0.5 ? this.add(entero, 1) : entero;
+    
+    // Dividir entre factor para obtener el resultado final
+    return this.div(redondeado, factor);
+}
     // Función exponencial con base e.
 
     exp(x) {
     if (typeof x !== 'number' || Number.isNaN(x)) return NaN;
     if (x === 0) return 1;
 
-    const abs = v => (v < 0 ? -v : v);
+    // Función abs usando mult
+    const abs = v => (v < 0 ? this.mult(v, -1) : v);
 
     // Reducción de rango: dividir por 2 repetidamente hasta |xr| <= 1
     let xr = x;
     let halves = 0;
     while (abs(xr) > 1) {
-        xr = xr / 2;
+        xr = this.div(xr, 2);
         halves++;
     }
 
@@ -85,19 +105,19 @@ class Calculator {
     let term = 1; // xr^0 / 0! = 1
     let sum = 1;
     for (let n = 1; n <= maxIter; n++) {
-        term = term * (xr / n); 
-        sum += term;
+        term = this.mult(term, this.div(xr, n)); 
+        sum = this.add(sum, term);
         if (abs(term) < tol) break;
         if (!isFinite(sum)) return sum;
     }
 
     for (let i = 0; i < halves; i++) {
-        sum = sum * sum;
+        sum = this.mult(sum, sum);
         if (!isFinite(sum)) return sum;
     }
 
     return sum;
-    }
+}
 
 // Actualiza el input actual
     updateInput(value) {
