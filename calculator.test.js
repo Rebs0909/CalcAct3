@@ -45,9 +45,21 @@ describe('Calculator', () => {
             expect(calc.mult(-5, -5)).toBe(25);
         });
 
+        //Division
+
+        test('Division de 25 entre 5 debe de ser 5', () => {
+            expect(calc.div(25, 5)).toBe(5);
+        });
 
 
-
+        test('División por cero debe lanzar error o retornar infinito', () => {
+        
+            expect(() => calc.div(5, 0)).toThrow(); // Si lanza error
+        // O
+            expect(calc.div(5, 0)).toBe(Infinity);  // Si retorna Infinity
+        // O
+            expect(calc.div(5, 0)).toBe("Error");   // Si retorna mensaje de error
+    });
 
 
 
