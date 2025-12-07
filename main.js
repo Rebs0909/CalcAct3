@@ -1,4 +1,3 @@
-// main.js
 import Calculator from './calculator.js';
 
 // Inicializar calculadora
@@ -36,6 +35,9 @@ function updateHistoryDisplay() {
 
 // Manejar clics en botones numéricos y operadores
 function handleButtonClick(value) {
+    // Ignorar botones vacíos o nulos
+    if (!value) return;
+
     // Lógica especial para botones
     if (value === 'AC') {
         calculator.clear();
@@ -47,28 +49,58 @@ function handleButtonClick(value) {
     
     updateDisplay();
 }
-
-// Evaluar expresión matemática básica 
+// Evaluar expresión con soporte para sqrt(...) y exp(...)
 function evaluateExpression(expression) {
     try {
-        if (expression.includes('√')) {
-            return Sqrt(expression);
+        // Función auxiliar que evalúa una expresión que ya no contiene sqrt(...) ni exp(...)
+        const evaluatePlain = (expr) => {
+            // evalúa con Function para que soportemos operadores + - * / y paréntesis
+            return Function('"use strict"; return (' + expr + ')')();
+        };
+
+        let expr = expression;
+
+        // Procesar sqrt(...) hasta que no haya más
+        const reSqrtInner = /sqrt\(([^()]+)\)/;
+        while (reSqrtInner.test(expr)) {
+            expr = expr.replace(reSqrtInner, (match, inner) => {
+                const innerVal = evaluateExpression(inner); // recursión
+                if (innerVal === 'Error') throw new Error('InnerError');
+                const num = Number(innerVal);
+                if (Number.isNaN(num)) throw new Error('NaN');
+                const r = calculator.sqrt(num);
+                return String(r);
+            });
         }
-    try {
-        if (expression.includes('e^{x}')) {
-            return exp(expression);
-        }    
-        const result = eval(expression); 
+
+        // Procesar exp(...) hasta que no haya más
+        const reExpInner = /exp\(([^()]+)\)/;
+        while (reExpInner.test(expr)) {
+            expr = expr.replace(reExpInner, (match, inner) => {
+                const innerVal = evaluateExpression(inner); // recursión
+                if (innerVal === 'Error') throw new Error('InnerError');
+                const num = Number(innerVal);
+                if (Number.isNaN(num)) throw new Error('NaN');
+                const r = calculator.exp(num);
+                return String(r);
+            });
+        }
+
+        // Ya no hay sqrt(...) ni exp(...): evaluar la expresión básica
+        const result = evaluatePlain(expr);
         return result.toString();
-    } catch (error) {
+    } catch (err) {
+        console.error('evaluateExpression error:', err);
         return 'Error';
     }
-}}
+}
 
-// Configurar event listeners
+//  listeners para todos los botones
 buttons.forEach(button => {
     button.addEventListener('click', () => {
-        const value = button.getAttribute('data-number');
+        let value = button.getAttribute('data-number');
+        if (value === 'exp(x)' || value === 'e^{x}') value = 'exp(';
+        if (value === 'sqrt') value = 'sqrt(';
         handleButtonClick(value);
     });
 });
@@ -87,16 +119,33 @@ eraseButton.addEventListener('click', () => {
 
 // Botón igual
 equalButton.addEventListener('click', () => {
-    const expression = calculator.getCurrentInput();
-    
-    // aqui va la evaluación
-    if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/') || expression.includes('sqrt')) {
+    let expression = calculator.getCurrentInput();
+
+    // Auto-cerrar paréntesis 
+    const opens = (expression.match(/\(/g) || []).length;
+    const closes = (expression.match(/\)/g) || []).length;
+    if (opens > closes) {
+        expression = expression + ')'.repeat(opens - closes);
+    }
+
+    // Evaluar si hay alguna operación soportada
+    if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/') || expression.includes('sqrt') || expression.includes('exp')) {
         const result = evaluateExpression(expression);
-        
-        // Agregar al historial
+
+        // Si ocurre un error internamente, result será 'Error'
+        if (result === 'Error') {
+            console.error('evaluateExpression devolvió Error para:', expression);
+            // Mostrar Error en la UI y en el historial
+            calculator.addToHistory(expression, 'Error');
+            calculator.clear();
+            calculator.updateInput('Error');
+            updateDisplay();
+            updateHistoryDisplay();
+            return;
+        }
+
+        // Agregar al historial y mostrar resultado
         calculator.addToHistory(expression, result);
-        
-        // Actualizar input con el resultado
         calculator.clear();
         calculator.updateInput(result);
         updateDisplay();

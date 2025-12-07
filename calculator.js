@@ -85,13 +85,12 @@ class Calculator {
     let term = 1; // xr^0 / 0! = 1
     let sum = 1;
     for (let n = 1; n <= maxIter; n++) {
-        term = term * (xr / n); // genera xr^n / n! de forma incremental
+        term = term * (xr / n); 
         sum += term;
         if (abs(term) < tol) break;
-        if (!isFinite(sum)) return sum; // overflow detectado
+        if (!isFinite(sum)) return sum;
     }
 
-    // Restaurar la escala: exp(x) = exp(xr)^(2^halves) -> repetir squaring
     for (let i = 0; i < halves; i++) {
         sum = sum * sum;
         if (!isFinite(sum)) return sum;

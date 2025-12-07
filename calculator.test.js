@@ -92,7 +92,7 @@ describe('Calculator', () => {
         // función abs 
         const abs = v => (v < 0 ? -v : v);
 
-        // referencia de exp usando serie de Taylor: sum_{n=0}^\infty x^n/n!
+        // referencia de exp usando serie de Taylor
         function referenceExp(x, tol = 1e-12, maxIter = 200) {
         let term = 1; // x^0 / 0! 
         let sum = 1;
