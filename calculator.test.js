@@ -71,6 +71,9 @@ describe('Calculator', () => {
         expect(calc.sqrt(1)).toBe(1);
         });
 
+        test('Raíz cuadrada de número negativo debe lanzar error', () => {
+        expect(() => calc.sqrt(-4)).toThrow('No se puede calcular raíz cuadrada de números negativos');
+        });
     });
 
     describe('Manejo de entrada', () => {

@@ -53,9 +53,8 @@ function evaluateExpression(expression) {
     try {
         if (expression.includes('√')) {
             return Sqrt(expression);
-        }// Por ahora solo maneja sumas y restas simples
-        // Ejemplo: "5+3" o "10-2"
-        const result = eval(expression); // CUIDADO: eval tiene riesgos de seguridad
+        }
+        const result = eval(expression); 
         return result.toString();
     } catch (error) {
         return 'Error';

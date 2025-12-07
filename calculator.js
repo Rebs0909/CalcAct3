@@ -33,7 +33,7 @@ class Calculator {
     //Raiz cuadrada
     sqrt(x) {
     if (x < 0) {
-        throw new Error("No se puede calcular raíz cuadrada de número negativo");
+        throw new Error("No se puede calcular raíz cuadrada de números negativos");
     }
     if (x === 0) return 0;
     if (x === 1) return 1;
@@ -61,7 +61,7 @@ class Calculator {
     roundToDecimal(num, decimals) {
     const factor = Math.pow(10, decimals);
     return Math.round(num * factor) / factor;
-    
+
     }
     // Actualiza el input actual
     updateInput(value) {
