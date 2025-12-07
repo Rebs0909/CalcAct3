@@ -63,5 +63,5 @@ class Calculator {
     }
 }
 
-// Exportar para usar en pruebas
+// Exportar para usar en las pruebas
 export default Calculator;

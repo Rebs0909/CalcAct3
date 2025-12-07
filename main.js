@@ -48,7 +48,7 @@ function handleButtonClick(value) {
     updateDisplay();
 }
 
-// Evaluar expresión matemática básica (solo suma y resta por ahora)
+// Evaluar expresión matemática básica 
 function evaluateExpression(expression) {
     try {
         // Por ahora solo maneja sumas y restas simples

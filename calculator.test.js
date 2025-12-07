@@ -7,7 +7,7 @@ describe('Calculator', () => {
     beforeEach(() => {
         calc = new Calculator();
     });
-
+// Funciones básicas de suma y resta para pruebas
     describe('Operaciones básicas', () => {
         test('Suma de 2 + 3 debe ser 5', () => {
             expect(calc.add(2, 3)).toBe(5);
