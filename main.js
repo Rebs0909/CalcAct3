@@ -54,12 +54,16 @@ function evaluateExpression(expression) {
         if (expression.includes('√')) {
             return Sqrt(expression);
         }
+    try {
+        if (expression.includes('e^{x}')) {
+            return exp(expression);
+        }    
         const result = eval(expression); 
         return result.toString();
     } catch (error) {
         return 'Error';
     }
-}
+}}
 
 // Configurar event listeners
 buttons.forEach(button => {

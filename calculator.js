@@ -63,7 +63,44 @@ class Calculator {
     return Math.round(num * factor) / factor;
 
     }
-    // Actualiza el input actual
+    // Función exponencial con base e.
+
+    exp(x) {
+    if (typeof x !== 'number' || Number.isNaN(x)) return NaN;
+    if (x === 0) return 1;
+
+    const abs = v => (v < 0 ? -v : v);
+
+    // Reducción de rango: dividir por 2 repetidamente hasta |xr| <= 1
+    let xr = x;
+    let halves = 0;
+    while (abs(xr) > 1) {
+        xr = xr / 2;
+        halves++;
+    }
+
+    // Serie de Taylor para exp(xr)
+    const tol = 1e-15;
+    const maxIter = 200;
+    let term = 1; // xr^0 / 0! = 1
+    let sum = 1;
+    for (let n = 1; n <= maxIter; n++) {
+        term = term * (xr / n); // genera xr^n / n! de forma incremental
+        sum += term;
+        if (abs(term) < tol) break;
+        if (!isFinite(sum)) return sum; // overflow detectado
+    }
+
+    // Restaurar la escala: exp(x) = exp(xr)^(2^halves) -> repetir squaring
+    for (let i = 0; i < halves; i++) {
+        sum = sum * sum;
+        if (!isFinite(sum)) return sum;
+    }
+
+    return sum;
+    }
+
+// Actualiza el input actual
     updateInput(value) {
         if (this.currentInput === '0' || this.currentInput === 'Error') {
             this.currentInput = value;
