@@ -18,6 +18,11 @@ class Calculator {
         return a - b;
     }
 
+    // Multiplica dos números
+    mult(a, b) {
+        return a * b;
+    }
+
     // Actualiza el input actual
     updateInput(value) {
         if (this.currentInput === '0' || this.currentInput === 'Error') {

@@ -85,7 +85,7 @@ equalButton.addEventListener('click', () => {
     const expression = calculator.getCurrentInput();
     
     // aqui va la evaluación
-    if (expression.includes('+') || expression.includes('-')) {
+    if (expression.includes('+') || expression.includes('-') || expression.includes('*')) {
         const result = evaluateExpression(expression);
         
         // Agregar al historial
