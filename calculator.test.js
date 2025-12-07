@@ -54,11 +54,8 @@ describe('Calculator', () => {
 
         test('División por cero debe lanzar error o retornar infinito', () => {
         
-            expect(() => calc.div(5, 0)).toThrow(); // Si lanza error
-        // O
-            expect(calc.div(5, 0)).toBe(Infinity);  // Si retorna Infinity
-        // O
-            expect(calc.div(5, 0)).toBe("Error");   // Si retorna mensaje de error
+            expect(calc.div(5, 0)).toBe(Infinity);
+            
     });
 
 

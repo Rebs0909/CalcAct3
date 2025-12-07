@@ -25,7 +25,9 @@ class Calculator {
 
     // Divide dos números
     div(a, b) {
+  
         return a / b;
+
     }
 
 
