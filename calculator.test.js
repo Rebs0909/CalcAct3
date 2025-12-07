@@ -8,7 +8,7 @@ describe('Calculator', () => {
         calc = new Calculator();
     });
 //
-    describe('Operaciones básicas', () => {
+    describe('Operaciones', () => {
         
         // suma y resta
         
@@ -74,7 +74,46 @@ describe('Calculator', () => {
         test('Raíz cuadrada de número negativo debe lanzar error', () => {
         expect(() => calc.sqrt(-4)).toThrow('No se puede calcular raíz cuadrada de números negativos');
         });
-    });
+    
+        // Función exponencial con base a e
+
+        test('exp(1) ≈ 2.718281828459045', () => {
+        expect(calc.exp(1)).toBeCloseTo(2.718281828459045, 6); // precisión ~1e-6
+        });
+
+        test('exp(2) ≈ 7.38905609893065', () => {
+        expect(calc.exp(2)).toBeCloseTo(7.38905609893065, 6);
+        });
+
+        test('exp(-1) ≈ 0.36787944117144233', () => {
+        expect(calc.exp(-1)).toBeCloseTo(0.36787944117144233, 6);
+        });
+        
+        // función abs 
+        const abs = v => (v < 0 ? -v : v);
+
+        // referencia de exp usando serie de Taylor: sum_{n=0}^\infty x^n/n!
+        function referenceExp(x, tol = 1e-12, maxIter = 200) {
+        let term = 1; // x^0 / 0! 
+        let sum = 1;
+        for (let n = 1; n <= maxIter; n++) {
+        term *= x / n; // produce x^n / n! de forma incremental
+        sum += term;
+        if (abs(term) < tol) break;
+        }
+        return sum;
+        }
+
+        test('exp(x) coincide con referencia por Taylor (error absoluto < 1e-3)', () => {
+        const xs = [-5, -1, -0.5, 0, 0.1, 0.5, 1, 2, 5];
+        xs.forEach(x => {
+        const expected = referenceExp(x);
+        const actual = calc.exp(x);
+        expect(abs(actual - expected)).toBeLessThan(1e-3); // precisión mejor que 1e-3
+        });
+        });
+
+        });
 
     describe('Manejo de entrada', () => {
         test('Input inicial debe ser 0', () => {
